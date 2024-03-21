@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список покупок</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #purchasesTable th, #purchasesTable td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #purchasesTable {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        #noPurchases {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .update-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .update-button:hover {
+            background-color: #0056b3;
+        }
+        #purchaseForm {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Список покупок</h1>
+    <div id="purchasesContainer">
+        <table id="purchasesTable" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Возраст</th>
+                <th>Количество</th>
+                <th>Товар</th>
+                <th>Сумма</th>
+                <th>Дата покупки</th>
+
+            </tr>
+            </thead>
+            <tbody id="purchasesBody">
+
+            </tbody>
+        </table>
+    </div>
+
+    <div id="noPurchases">
+        <p>Покупки не найдены.</p>
+    </div>
+    <div class="overlay" onclick="toggleForm()"></div>
+    <form id="purchaseForm">
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <input type="hidden" id="purchase_id" name="purchase_id">
+
+        <label for="lastname">Фамилия:</label>
+        <input type="text" id="lastname" name="lastname" required><br><br>
+
+        <label for="age">Возраст:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="purchase_item">Элемент покупки:</label>
+        <select id="purchase_item" name="purchase_item" required>
+
+        </select><br><br>
+
+        <label for="count">Количество:</label>
+        <input type="number" id="count" name="count" required><br><br>
+
+        <label for="amount">Сумма:</label>
+        <input type="text" id="amount" name="amount" required><br><br>
+
+        <label for="purchase_date">Дата покупки:</label>
+        <input type="date" id="purchase_date" name="purchase_date" required><br><br>
+
+        <button type="button" onclick="updatePurchase()">Обновить покупку</button>
+
+    </form>
+
+
+</div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('http://localhost:8080/api/purchase/all', {
+            headers: {
+                'Content-Type': 'application/xml;charset=UTF-8'
+            }
+        })
+            .then(response => response.text())
+            .then(str => {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(str, 'text/xml');
+                const purchases = xmlDoc.getElementsByTagName('purchaseInfo');
+                const purchasesBody = document.getElementById('purchasesBody');
+
+                if (purchases.length > 0) {
+                    for (let i = 0; i < purchases.length; i++) {
+                        const purchase = purchases[i];
+                        const id = purchase.querySelector('id') ? purchase.querySelector('id').textContent : 'Н/Д';
+                        const firstName = purchase.querySelector('firstName').textContent;
+                        const lastName = purchase.querySelector('lastName').textContent;
+                        const age = purchase.querySelector('age').textContent;
+                        const count = purchase.querySelector('count').textContent;
+                        const purchaseItem = purchase.querySelector('purchaseItem').textContent;
+                        const amount = purchase.querySelector('amount').textContent;
+                        let purchaseDate = purchase.querySelector('purchaseDate').textContent;
+
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+    <td>${id}</td>
+    <td>${firstName}</td>
+    <td>${lastName}</td>
+    <td>${age}</td>
+    <td>${count}</td>
+    <td>${purchaseItem}</td>
+    <td>${amount}</td>
+    <td>${purchaseDate}</td>
+    <td><button class="delete-button" onclick="deletePurchase(${id})">Удалить</button></td>
+    <td><button class="update-button" onclick='toggleForm(${JSON.stringify({ id, firstName, lastName, age, count, purchaseItem, amount, purchaseDate })})'>Обновить</button></td>
+`;
+                        purchasesBody.appendChild(row);
+
+                        purchasesBody.appendChild(row);
+
+                    }
+                } else {
+                    document.getElementById('noPurchases').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при выполнении запроса:', error);
+            });
+    });
+
+    function deletePurchase(id) {
+        fetch(`http://localhost:8080/api/purchase/delete/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/xml;charset=UTF-8'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Покупка успешно удалена!');
+
+                    window.location.reload();
+                } else {
+                    throw new Error('Ошибка удаления покупки');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка удаления покупки: ', error);
+                alert('Произошла ошибка при удалении покупки');
+            });
+
+
+
+
+    }
+    var purchaseItemSelect = document.getElementById("purchase_item");
+    var purchaseItems = ["TELEVISION", "SMARTPHONE", "JUICER", "HEADPHONES", "KEYBOARD"];
+    purchaseItems.forEach(function(item) {
+        var option = document.createElement("option");
+        option.value = item;
+        option.text = item;
+        purchaseItemSelect.appendChild(option);
+    });
+    document.getElementById("toggleButton").addEventListener("click", toggleForm);
+
+    function toggleForm(purchase) {
+        var form = document.getElementById("purchaseForm");
+        var overlay = document.querySelector('.overlay');
+        if (form.style.display === "none") {
+            form.style.display = "block";
+            overlay.style.display = "block";
+            document.getElementById("purchase_id").value = purchase.id;
+            document.getElementById("name").value = purchase.firstName;
+            document.getElementById("lastname").value = purchase.lastName;
+            document.getElementById("age").value = purchase.age;
+            document.getElementById("purchase_item").value = purchase.purchaseItem;
+            document.getElementById("count").value = purchase.count;
+            document.getElementById("amount").value = purchase.amount;
+            document.getElementById("purchase_date").value = purchase.purchaseDate;
+        } else {
+            form.style.display = "none";
+            overlay.style.display = "none";
+        }
+    }
+    function updatePurchase() {
+        var id = document.getElementById("purchase_id").value;
+
+        var xmlString = `
+<PurchaseInfo>
+        <firstName>${document.getElementById("name").value}</firstName>
+        <lastName>${document.getElementById("lastname").value}</lastName>
+        <age>${document.getElementById("age").value}</age>
+        <purchaseItem>${document.getElementById("purchase_item").value}</purchaseItem>
+        <count>${document.getElementById("count").value}</count>
+        <amount>${document.getElementById("amount").value}</amount>
+        <purchaseDate>${document.getElementById("purchase_date").value}</purchaseDate>
+</PurchaseInfo>
+`;
+
+
+        fetch(`http://localhost:8080/api/purchase/update/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/xml;charset=UTF-8'
+            },
+            body: xmlString
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Покупка успешно обновлена!');
+                    window.location.reload();
+                } else {
+                    throw new Error('Ошибка обновления покупки');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка обновления покупки: ', error);
+                alert('Произошла ошибка при обновлении покупки');
+            });
+    }
+
+
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"
+        integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
+        crossorigin="anonymous"></script>
+</body>
+</html>

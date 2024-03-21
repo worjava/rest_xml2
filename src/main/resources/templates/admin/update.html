@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обновление информации о покупке</title>
+</head>
+<body>
+<h2>Обновление информации о покупке</h2>
+<form id="purchaseForm">
+    <label for="firstName">Имя:</label>
+    <input type="text" id="firstName" name="firstName" required><br><br>
+
+    <label for="lastName">Фамилия:</label>
+    <input type="text" id="lastName" name="lastName" required><br><br>
+
+    <label for="age">Возраст:</label>
+    <input type="number" id="age" name="age" required><br><br>
+
+    <label for="count">Количество:</label>
+    <input type="number" id="count" name="count" required><br><br>
+
+    <label for="purchaseItem">Покупаемый товар:</label>
+    <input type="text" id="purchaseItem" name="purchaseItem" required><br><br>
+
+    <label for="amount">Сумма:</label>
+    <input type="number" id="amount" name="amount" required><br><br>
+
+    <label for="purchaseDate">Дата покупки:</label>
+    <input type="date" id="purchaseDate" name="purchaseDate" required><br><br>
+
+    <button type="submit">Обновить покупку</button>
+</form>
+
+<script>
+
+
+    function updatePurchase(data) {
+        const purchaseXml = `
+            <PurchaseInfo>
+                <firstName>${data.firstName}</firstName>
+                <lastName>${data.lastName}</lastName>
+                <age>${data.age}</age>
+                <count>${data.count}</count>
+                <purchaseItem>${data.purchaseItem}</purchaseItem>
+                <amount>${data.amount}</amount>
+                <purchaseDate>${data.purchaseDate}</purchaseDate>
+            </PurchaseInfo>`;
+
+        fetch('http://localhost:8080/api/purchase/update', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/xml;charset=UTF-8'
+            },
+            body: purchaseXml
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Покупка успешно обновлена!");
+                } else {
+                    alert("Ошибка при обновлении покупки!");
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при отправке запроса на обновление: ', error);
+                alert("Произошла ошибка при обновлении покупки.");
+            });
+    }
+</script>
+</body>
+</html>

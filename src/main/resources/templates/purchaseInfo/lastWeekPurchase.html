@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Покупки за последнюю неделю</title>
+</head>
+<body>
+<h2>Покупки за последнюю неделю</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Возраст</th>
+        <th>Количество</th>
+        <th>Товар</th>
+        <th>Сумма</th>
+        <th>Дата покупки</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="purchase : ${lastWeekPurchases}">
+        <td th:text="${purchase.firstName}"></td>
+        <td th:text="${purchase.lastName}"></td>
+        <td th:text="${purchase.age}"></td>
+        <td th:text="${purchase.count}"></td>
+        <td th:text="${purchase.purchaseItem}"></td>
+        <td th:text="${purchase.amount}"></td>
+        <td th:text="${purchase.purchaseDate}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

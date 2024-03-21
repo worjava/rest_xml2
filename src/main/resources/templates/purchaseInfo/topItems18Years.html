@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Самый покупаемый товар 18 летних</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<h2>Самый покупаемый товар 18 летних</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Товар</th>
+        <th>Количество продаж</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${topItem.getProductName()}">Название товара</td>
+        <td th:text="${topItem.getSalesCount()}">Количество продаж</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

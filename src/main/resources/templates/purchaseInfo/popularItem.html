@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Самый популярный товар за последний месяц</title>
+</head>
+<body>
+<h1>Самый популярный товар за последний месяц</h1>
+<div>
+    <p>Название товара: <span th:text="${product.getProductName()}"></span></p>
+    <p>Количество продаж: <span th:text="${product.getSalesCount()}"></span></p>
+</div>
+</body>
+</html>

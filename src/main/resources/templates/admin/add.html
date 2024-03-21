@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изменить Purchase</title>
+</head>
+<body>
+<h1>Изменить покупку покупку</h1>
+<form id="purchaseForm">
+    <label for="name">Имя:</label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="lastname">Фамилия:</label>
+    <input type="text" id="lastname" name="lastname" required><br><br>
+
+    <label for="age">Возраст:</label>
+    <input type="number" id="age" name="age" required><br><br>
+
+    <label for="purchase_item">Элемент покупки:</label>
+    <select id="purchase_item" name="purchase_item" required>
+        <option value="">Выберите элемент покупки</option>
+        <option value="TELEVISION">Телевизор</option>
+        <option value="SMARTPHONE">Смартфон</option>
+        <option value="JUICER">Соковыжималка</option>
+        <option value="HEADPHONES">Наушники</option>
+        <option value="KEYBOARD">Клавиатура</option>
+    </select><br><br>
+
+    <label for="count">Количество:</label>
+    <input type="number" id="count" name="count" required><br><br>
+
+    <label for="amount">Сумма:</label>
+    <input type="text" id="amount" name="amount" required><br><br>
+
+    <label for="purchase_date">Дата покупки:</label>
+    <input type="date" id="purchase_date" name="purchase_date" required><br><br>
+
+    <button type="button" onclick="addPurchase()">Добавить покупку</button>
+</form>
+
+<script>
+    function addPurchase() {
+        var purchaseData = {
+            name: document.getElementById("name").value,
+            lastname: document.getElementById("lastname").value,
+            age: document.getElementById("age").value,
+            purchase_item: document.getElementById("purchase_item").value,
+            count: document.getElementById("count").value,
+            amount: document.getElementById("amount").value,
+            purchase_date: document.getElementById("purchase_date").value
+        };
+
+        var xmlString = `
+<PurchaseInfo>
+    <firstName>${purchaseData.name}</firstName>
+    <lastName>${purchaseData.lastname}</lastName>
+    <age>${purchaseData.age}</age>
+    <purchaseItem>${purchaseData.purchase_item}</purchaseItem>
+    <count>${purchaseData.count}</count>
+    <amount>${purchaseData.amount}</amount>
+    <purchaseDate>${purchaseData.purchase_date}</purchaseDate>
+</PurchaseInfo>
+`;
+
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString(xmlString, "text/xml");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/purchase/save");
+        xhr.setRequestHeader("Content-Type", "application/xml");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 201) {
+                    alert("Покупка успешно добавлена!");
+                    window.location.href = "/api/admin/home"; // Перенаправление на страницу api/admin/home
+                } else {
+                    alert("Ошибка: " + xhr.responseText);
+                }
+            }
+        };
+        xhr.send(xmlDoc);
+    }
+</script>
+</body>
+</html>
