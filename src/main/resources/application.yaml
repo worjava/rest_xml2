@@ -1,7 +1,6 @@
 spring:
   datasource:
-    initialization-mode: always
-    schema: classpath:data.sql
+    
 
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgress
