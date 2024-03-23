@@ -16,5 +16,4 @@ spring:
 
 
 
-    initialization-mode: always
-    schema: classpath:data.sql
+    
