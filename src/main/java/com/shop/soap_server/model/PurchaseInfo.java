@@ -24,8 +24,6 @@ public class PurchaseInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "purchase_info_sequence", sequenceName = "purchase_info_id_seq", allocationSize = 1)
-
     private Long id;
     @ManyToOne(cascade =  CascadeType.REMOVE)
     private User user;

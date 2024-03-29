@@ -16,9 +16,7 @@ import java.util.Objects;
 @Table(name = "app_user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
-    @SequenceGenerator(name = "user_sequence", sequenceName = "app_user_id_seq", allocationSize = 1)
-
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String firstName;
