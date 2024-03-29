@@ -1,4 +1,4 @@
-package com.shop.soap_server.model.dto;
+package com.shop.soap_server.model.dto.reports;
 
 public class TopBuyerDto {
     private String name;

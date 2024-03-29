@@ -149,38 +149,36 @@
             .then(str => {
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(str, 'text/xml');
-                const purchases = xmlDoc.getElementsByTagName('purchaseInfo');
+                const purchases = xmlDoc.getElementsByTagName('Purchase');
                 const purchasesBody = document.getElementById('purchasesBody');
 
                 if (purchases.length > 0) {
                     for (let i = 0; i < purchases.length; i++) {
                         const purchase = purchases[i];
-                        const id = purchase.querySelector('id') ? purchase.querySelector('id').textContent : 'Н/Д';
-                        const firstName = purchase.querySelector('firstName').textContent;
-                        const lastName = purchase.querySelector('lastName').textContent;
-                        const age = purchase.querySelector('age').textContent;
+                        const id = purchase.querySelector('id').textContent;
+                        const user = purchase.querySelector('user');
+                        const firstName = user.querySelector('firstName').textContent;
+                        const lastName = user.querySelector('lastName').textContent;
+                        const age = user.querySelector('age').textContent;
                         const count = purchase.querySelector('count').textContent;
                         const purchaseItem = purchase.querySelector('purchaseItem').textContent;
                         const amount = purchase.querySelector('amount').textContent;
-                        let purchaseDate = purchase.querySelector('purchaseDate').textContent;
+                        const purchaseDate = purchase.querySelector('purchaseDate').textContent;
 
                         const row = document.createElement('tr');
                         row.innerHTML = `
-    <td>${id}</td>
-    <td>${firstName}</td>
-    <td>${lastName}</td>
-    <td>${age}</td>
-    <td>${count}</td>
-    <td>${purchaseItem}</td>
-    <td>${amount}</td>
-    <td>${purchaseDate}</td>
-    <td><button class="delete-button" onclick="deletePurchase(${id})">Удалить</button></td>
-    <td><button class="update-button" onclick='toggleForm(${JSON.stringify({ id, firstName, lastName, age, count, purchaseItem, amount, purchaseDate })})'>Обновить</button></td>
-`;
+                        <td>${id}</td>
+                        <td>${firstName}</td>
+                        <td>${lastName}</td>
+                        <td>${age}</td>
+                        <td>${count}</td>
+                        <td>${purchaseItem}</td>
+                        <td>${amount}</td>
+                        <td>${purchaseDate}</td>
+                        <td><button class="delete-button" onclick="deletePurchase(${id})">Удалить</button></td>
+                        <td><button class="update-button" onclick='toggleForm(${JSON.stringify({ id, firstName, lastName, age, count, purchaseItem, amount, purchaseDate })})'>Обновить</button></td>
+                    `;
                         purchasesBody.appendChild(row);
-
-                        purchasesBody.appendChild(row);
-
                     }
                 } else {
                     document.getElementById('noPurchases').style.display = 'block';
@@ -249,15 +247,19 @@
         var id = document.getElementById("purchase_id").value;
 
         var xmlString = `
-<PurchaseInfo>
+<UserPurchase>
+    <User>
         <firstName>${document.getElementById("name").value}</firstName>
         <lastName>${document.getElementById("lastname").value}</lastName>
-        <age>${document.getElementById("age").value}</age>
+        <Age>${document.getElementById("age").value}</Age>
+    </User>
+    <PurchaseInfo>
         <purchaseItem>${document.getElementById("purchase_item").value}</purchaseItem>
         <count>${document.getElementById("count").value}</count>
         <amount>${document.getElementById("amount").value}</amount>
         <purchaseDate>${document.getElementById("purchase_date").value}</purchaseDate>
-</PurchaseInfo>
+    </PurchaseInfo>
+</UserPurchase>
 `;
 
 

@@ -3,11 +3,18 @@
 
     <xs:simpleType name="NameType">
         <xs:restriction base="xs:string">
-            <!-- Шаблон, который разрешает буквы (можно добавить пробелы, дефисы) -->
+
             <xs:pattern value="[A-Za-zА-Яа-я\- ]+"/>
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:complexType name="User">
+        <xs:sequence>
+            <xs:element name="firstName" type="NameType"/>
+            <xs:element name="lastName" type="NameType"/>
+            <xs:element name="Age" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
 
     <!-- Тип для элемента покупки -->
     <xs:simpleType name="PurchaseItem">
@@ -20,11 +27,9 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:complexType name="PurchaseInfoType">
+    <!-- Модифицированный тип PurchaseInfo -->
+    <xs:complexType name="PurchaseInfo">
         <xs:sequence>
-            <xs:element name="firstName" type="NameType" nillable="false"/>
-            <xs:element name="lastName" type="NameType" nillable="false"/>
-            <xs:element name="age" type="xs:int"/>
             <xs:element name="purchaseItem" type="PurchaseItem"/>
             <xs:element name="count" type="xs:int"/>
             <xs:element name="amount" type="xs:decimal"/>
@@ -33,6 +38,18 @@
     </xs:complexType>
 
 
-    <xs:element name="PurchaseInfo" type="PurchaseInfoType"/>
+    <xs:element name="PurchaseInfo" type="PurchaseInfo"/>
+
+
+    <!-- Дополнительный комплексный тип для объединения User и PurchaseI -->
+    <xs:complexType name="UserPurchase">
+        <xs:sequence>
+            <xs:element name="User" type="User"/>
+            <xs:element name="PurchaseInfo" type="PurchaseInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Корневой элемент для нового типа -->
+    <xs:element name="UserPurchase" type="UserPurchase"/>
 
 </xs:schema>

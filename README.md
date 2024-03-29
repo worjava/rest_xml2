@@ -24,15 +24,21 @@ Docker
 
 xml
 
-<purchase>
-<name>Телевизор</name>
-<lastname>Иванов</lastname>
-<age>30</age>
-<purchase_item>Телевизор</purchase_item>
-<count>1</count>
-<amount>500.00</amount>
-<purchase_date>2024-03-20</purchase_date>
-</purchase>
+
+<UserPurchase>
+    <User>
+        <FirstName>Иван</FirstName>
+        <LastName>Иванов</LastName>
+        <Age>30</Age>
+    </User>
+    <PurchaseInfo>
+        <purchaseItem>TELEVISION</purchaseItem>
+        <count>1</count>
+        <amount>500.00</amount>
+        <purchaseDate>2024-03-20</purchaseDate>
+    </PurchaseInfo>
+</UserPurchase>
+
 Задача
 
 Описать входящий запрос XSD-схемой + описать структуры базы данных в SQL.

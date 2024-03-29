@@ -1,7 +1,7 @@
 package com.shop.soap_server.controller.purchase_reports;
 
-import com.shop.soap_server.model.dto.ProductInfoDto;
-import com.shop.soap_server.model.dto.TopBuyerDto;
+import com.shop.soap_server.model.dto.reports.ProductInfoDto;
+import com.shop.soap_server.model.dto.reports.TopBuyerDto;
 import com.shop.soap_server.service.PurchaseInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,10 +1,6 @@
 package com.shop.soap_server.service;
 
-import com.shop.soap_server.model.PurchaseInfo;
-
-import java.util.List;
-
-public interface PurchaseServiceCRUD {
+public interface PurchaseUserServiceCRUD {
 
     void createPurchase(String purchaseXml);
 

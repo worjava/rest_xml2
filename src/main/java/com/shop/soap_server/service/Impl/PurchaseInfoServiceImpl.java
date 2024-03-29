@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 import com.shop.soap_server.model.PurchaseInfo;
-import com.shop.soap_server.model.dto.ProductInfoDto;
-import com.shop.soap_server.model.dto.TopBuyerDto;
+import com.shop.soap_server.model.dto.reports.ProductInfoDto;
+import com.shop.soap_server.model.dto.reports.TopBuyerDto;
 import com.shop.soap_server.repository.PurchaseInfoRepository;
 import com.shop.soap_server.service.PurchaseInfoService;
 import org.springframework.stereotype.Service;

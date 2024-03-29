@@ -16,19 +16,14 @@ import java.time.LocalDate;
 @XmlRootElement(name = "PurchaseInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PurchaseInfoDto {
-    @XmlElement(required = true)
-    private String firstName;
+
 
     @XmlElement(required = true)
-    private String lastName;
-    @XmlElement(required = true)
-    private int age;
+    private PurchaseItem purchaseItem;
 
     @XmlElement(required = true)
     private int count;
 
-    @XmlElement(required = true)
-    private PurchaseItem purchaseItem;
 
     @XmlElement(required = true)
     private BigDecimal amount;
@@ -37,28 +32,22 @@ public class PurchaseInfoDto {
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate purchaseDate;
 
-    public String getFirstName() {
-        return firstName;
+
+    PurchaseInfoDto(){}
+
+    public PurchaseInfoDto(int count, PurchaseItem purchaseItem, BigDecimal amount, LocalDate purchaseDate) {
+        this.count = count;
+        this.purchaseItem = purchaseItem;
+        this.amount = amount;
+        this.purchaseDate = purchaseDate;
     }
 
-    public String getLastName() {
-        return lastName;
+    public int getCount() {
+        return count;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public PurchaseItem getPurchaseItem() {
@@ -69,28 +58,21 @@ public class PurchaseInfoDto {
         this.purchaseItem = purchaseItem;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
+    }
+
     public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
 
 }

@@ -54,7 +54,7 @@ public class XMLValidatorServiceImpl implements XMLValidatorService {
             }
 
 
-            return true;
+            return false;
         } catch (ParserConfigurationException e) {
             throw new RuntimeException("Ошибка конфигурации парсера XML", e);
         } catch (IOException e) {
@@ -62,5 +62,6 @@ public class XMLValidatorServiceImpl implements XMLValidatorService {
         } catch (SAXException e) {
             throw new RuntimeException("Ошибка валидации XML", e);
         }
+
     }
 }

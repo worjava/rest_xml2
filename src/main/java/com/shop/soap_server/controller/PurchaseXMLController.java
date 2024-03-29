@@ -1,6 +1,6 @@
 package com.shop.soap_server.controller;
 
-import com.shop.soap_server.service.PurchaseServiceCRUD;
+import com.shop.soap_server.service.PurchaseUserServiceCRUD;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "PurchaseXMLController", description = "Контроллер для управления CRUD покупками в формате XML")
 public class PurchaseXMLController {
 
-    private final PurchaseServiceCRUD service;
+    private final PurchaseUserServiceCRUD service;
 
 
-    public PurchaseXMLController(PurchaseServiceCRUD service) {
+    public PurchaseXMLController(PurchaseUserServiceCRUD service) {
         this.service = service;
 
     }

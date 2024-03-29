@@ -6,4 +6,5 @@ public interface XMLValidatorService {
 
     boolean isValid(String xmlData) throws ParserConfigurationException;
 
-}
+
+    }

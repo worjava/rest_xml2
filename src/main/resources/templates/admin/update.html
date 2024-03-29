@@ -36,23 +36,27 @@
 
 
     function updatePurchase(data) {
-        const purchaseXml = `
-            <PurchaseInfo>
+        const userPurchaseXml = `
+        <UserPurchase>
+            <User>
                 <firstName>${data.firstName}</firstName>
                 <lastName>${data.lastName}</lastName>
-                <age>${data.age}</age>
-                <count>${data.count}</count>
+                <Age>${data.age}</Age>
+            </User>
+            <PurchaseInfo>
                 <purchaseItem>${data.purchaseItem}</purchaseItem>
+                <count>${data.count}</count>
                 <amount>${data.amount}</amount>
                 <purchaseDate>${data.purchaseDate}</purchaseDate>
-            </PurchaseInfo>`;
+            </PurchaseInfo>
+        </UserPurchase>`;
 
         fetch('http://localhost:8080/api/purchase/update', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/xml;charset=UTF-8'
             },
-            body: purchaseXml
+            body: userPurchaseXml
         })
             .then(response => {
                 if (response.ok) {
@@ -66,6 +70,7 @@
                 alert("Произошла ошибка при обновлении покупки.");
             });
     }
+
 </script>
 </body>
 </html>

@@ -1,24 +1,20 @@
 package com.shop.soap_server.controller;
 
 
-import com.shop.soap_server.service.PurchaseServiceCRUD;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
+import com.shop.soap_server.service.PurchaseUserServiceCRUD;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
 
 @Controller
 @RequestMapping("/api/admin")
 @Tag(name = "AdminController", description = "Административный контроллер упралвения покупками и панели администратора")
 public class AdminController {
 
-    private final PurchaseServiceCRUD purchaseServiceCRUD;
+    private final PurchaseUserServiceCRUD purchaseServiceCRUD;
 
-    public AdminController(PurchaseServiceCRUD purchaseServiceCRUD) {
+    public AdminController(PurchaseUserServiceCRUD purchaseServiceCRUD) {
         this.purchaseServiceCRUD = purchaseServiceCRUD;
     }
 

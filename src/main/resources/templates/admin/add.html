@@ -52,15 +52,19 @@
         };
 
         var xmlString = `
-<PurchaseInfo>
-    <firstName>${purchaseData.name}</firstName>
-    <lastName>${purchaseData.lastname}</lastName>
-    <age>${purchaseData.age}</age>
-    <purchaseItem>${purchaseData.purchase_item}</purchaseItem>
-    <count>${purchaseData.count}</count>
-    <amount>${purchaseData.amount}</amount>
-    <purchaseDate>${purchaseData.purchase_date}</purchaseDate>
-</PurchaseInfo>
+<UserPurchase>
+    <User>
+        <firstName>${purchaseData.name}</firstName>
+        <lastName>${purchaseData.lastname}</lastName>
+        <Age>${purchaseData.age}</Age>
+    </User>
+    <PurchaseInfo>
+        <purchaseItem>${purchaseData.purchase_item}</purchaseItem>
+        <count>${purchaseData.count}</count>
+        <amount>${purchaseData.amount}</amount>
+        <purchaseDate>${purchaseData.purchase_date}</purchaseDate>
+    </PurchaseInfo>
+</UserPurchase>
 `;
 
         var parser = new DOMParser();
@@ -69,7 +73,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/api/purchase/save");
         xhr.setRequestHeader("Content-Type", "application/xml");
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 201) {
                     alert("Покупка успешно добавлена!");
