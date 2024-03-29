@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:11
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgress
+      POSTGRES_PASSWORD: roott
+    ports:
+      - "5432:5432"
+
+  purchase-app:
+    build: .
+    container_name: purchas-app
+    restart: always
+    ports:
+      - "8087:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgress
+      SPRING_DATASOURCE_PASSWORD: roott
+    volumes:
+      - ./src/main/resources/templates:/path/to/templates/in/container
